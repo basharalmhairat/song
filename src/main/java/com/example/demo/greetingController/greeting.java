@@ -1,14 +1,23 @@
 package com.example.demo.greetingController;
 import com.example.demo.domain.album;
+import com.example.demo.wep.albumRepo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.List;
+
+
 @Controller
 public class greeting {
+
+    @Autowired
+    albumRepo AlbumRepo;
 
 
         @GetMapping("/hello")
@@ -39,6 +48,20 @@ public class greeting {
         System.out.println("the root page ");
         return "root";
     }
+    @GetMapping("/addAlbum")
+    public String AllAlbums(Model m) {
+        List<album> album = (List<com.example.demo.domain.album>) AlbumRepo.findAll();
+        m.addAttribute("albums", AlbumRepo.findAll());
 
+        return "allAlbum";
+    }
+
+
+    @PostMapping("/addAlbum")
+    public RedirectView addAlbum(String title, String artist, int songCount, int length, String imageUrl) {
+        album m = new album(title, artist, songCount, length, imageUrl);
+        AlbumRepo.save(m);
+        return new RedirectView("/addAlbum");
+    }
 
 }

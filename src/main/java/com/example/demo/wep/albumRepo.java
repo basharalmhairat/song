@@ -1,7 +1,7 @@
 package com.example.demo.wep;
 
 import com.example.demo.domain.album;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 
-public interface albumRepo extends JpaRepository<album, Long>{}
+public interface albumRepo extends CrudRepository<album, Long>{}
 
