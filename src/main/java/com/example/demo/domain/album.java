@@ -1,6 +1,7 @@
 package com.example.demo.domain;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class album {
@@ -13,6 +14,10 @@ public class album {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 long id;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy ="albums")
+    List<songs> Songs;
+
 
     public album(){}
 
@@ -70,4 +75,6 @@ long id;
     public void setId(long id) {
         this.id = id;
     }
+
+
 }
