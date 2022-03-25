@@ -1,11 +1,12 @@
 package com.example.demo.greetingController;
 import com.example.demo.domain.album;
+import com.example.demo.domain.songs;
 import com.example.demo.wep.albumRepo;
+import com.example.demo.wep.songsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.view.RedirectView;
@@ -18,6 +19,8 @@ public class greeting {
 
     @Autowired
     albumRepo AlbumRepo;
+    songsRepo SongsRepo;
+
 
 
         @GetMapping("/hello")
@@ -64,4 +67,31 @@ public class greeting {
         return new RedirectView("/addAlbum");
     }
 
+
+    @GetMapping("/songs")
+    public String getAllSongs(Model m){
+        List<songs> song = SongsRepo.findAll();
+        m.addAttribute("songs", song);
+        return "songs";
+    }
+
+    @GetMapping("/song/{title}")
+    public String getASong(@PathVariable String title, Model m){
+        songs s = SongsRepo.findByTitle(title);
+        m.addAttribute("song", s);
+        return "oneSong";
+    }
+
+    @PostMapping("/songs")
+    public RedirectView addSong(String title, int trackNumber, String album ) {
+        album a = AlbumRepo.findByTitle(album);
+        songs m = SongsRepo.findByTitleAndAlbum(title, a);
+
+        if ( m == null){
+            m = new songs(title, trackNumber, a);
+            SongsRepo.save(m);
+        }
+
+        return new RedirectView("/songs");
+    }
 }
