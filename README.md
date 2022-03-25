@@ -12,4 +12,7 @@ firs Select the start server. start your browser and navigate to localhost:8080 
 
 /addAlbum                                          ---->            to add album and see the update
 
+/songs                                             ---->           to add songs
+
+/songs/{title]                                     ---->           to find one song thats match the title 
 
